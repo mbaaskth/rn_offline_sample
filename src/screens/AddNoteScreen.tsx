@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useNotes } from '../hooks/useNotes';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../types/navigation';
+import { useNotesContext } from '../context/NotesContext';
 
-const AddNoteScreen = () => {
-  const [note, setNote] = useState('');
-  const { addNote } = useNotes([]);
-  const navigation = useNavigation();
+type AddNoteScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AddNote'>;
+
+const AddNoteScreen: React.FC = () => {
+  const [note, setNote] = useState<string>('');
+  const { addNote } = useNotesContext();
+  const navigation = useNavigation<AddNoteScreenNavigationProp>();
 
   const handleAddNote = () => {
     if (note.trim()) {
       addNote(note.trim());
       setNote('');
-      navigation.goBack(); // 노트 추가 후 이전 화면으로 돌아감
+      navigation.goBack();
     }
   };
 
